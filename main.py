@@ -9,6 +9,7 @@ import os
 import urllib
 import jinja2
 import webapp2
+import time
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
