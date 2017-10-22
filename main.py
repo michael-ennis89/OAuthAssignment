@@ -75,7 +75,7 @@ class OauthHandler(webapp2.RequestHandler):
 			}
 
 			template = JINJA_ENVIRONMENT.get_template('oauth.html')
-			self.response.write(template.render(template_values)))
+			self.response.write(template.render(template_values))
 		
 		else:
 			self.response.write('400 Bad Request')
@@ -88,9 +88,9 @@ class DisplayHandler(webapp2.RequestHandler):
 		
 		auth_header = 'Bearer ' + token
 		
-		headers = [
+		headers = {
 			'Authorization' : auth_header
-		]
+		}
 		
 		result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
 		time.sleep(0.5)
@@ -104,13 +104,13 @@ class DisplayHandler(webapp2.RequestHandler):
 			emails = results['emails']['value']
 			
 			template_values = {
-				firstName = givenName,
-				lastName = familyName,
-				emailAddress = emails
+				'firstName' : givenName,
+				'lastName' : familyName,
+				'emailAddress' : emails
 			}
 			
 			template = JINJA_ENVIRONMENT.get_template('display.html')
-			self.response.write(template.render(template_values)))
+			self.response.write(template.render(template_values))
 		
 		else:
 			self.response.write('400 Bad Request')
