@@ -107,8 +107,8 @@ class DisplayHandler(webapp2.RequestHandler):
 			template_values = {
 				'firstName' : givenName,
 				'lastName' : familyName,
-				'url' : urls
-			}
+				'url' : urls,
+			}	'state' : state
 			
 			template = JINJA_ENVIRONMENT.get_template('display.html')
 			self.response.write(template.render(template_values))
