@@ -1,7 +1,10 @@
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.ext import urlfetch
 from datetime import datetime
 import json
+import logging
+import hashlib
 import os
 import urllib
 import jinja2
@@ -24,10 +27,10 @@ class MainPage(webapp2.RequestHandler):
 			'state' : state
 		}
 		
-		new_key = State(id="", state=state)
-		new_key.put()
-		new_key.id = str(new_key.key.id())
-		new_key.put()
+		newkey = State(id="", state=state)
+		newkey.put()
+		newkey.id = str(newkey.key.id())
+		newkey.put()
 		
 		template = JINJA_ENVIRONMENT.get_template('index.html')
 		self.response.write(template.render(template_values))
