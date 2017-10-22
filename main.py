@@ -43,7 +43,7 @@ class OauthHandler(webapp2.RequestHandler):
 		verification = 0;
 		
 		check_state = State.query()
-		results = qry.fetch()
+		results = check_state.fetch()
 		for i in results:
 			if (i.state == state):
 				verification = 1
