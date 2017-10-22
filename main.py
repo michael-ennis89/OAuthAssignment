@@ -52,13 +52,13 @@ class OauthHandler(webapp2.RequestHandler):
 				
 		if (verification == 1):
 			client_id = "931042662040-5cc54gub0j7ds4o7tp3ehdq8b30cqo9s.apps.googleusercontent.com"
-			clien_secret = "Ok5k-VTZW1CfBLCeon9-PfYK"
+			client_secret = "Ok5k-VTZW1CfBLCeon9-PfYK"
 			redirect_uri = "https://oauthdemoosu.appspot.com/oauth"
 			
 			payload = {
 			'code' : code,
 			'client_id' : client_id,
-			'clien_secret' : clien_secret,
+			'client_secret' : client_secret,
 			'redirect_uri' : redirect_uri,
 			'grant_type' : 'authorization_code'
 			}
