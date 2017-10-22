@@ -1,5 +1,6 @@
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.api import urlfetch
 from datetime import datetime
 import json
 import logging
@@ -36,11 +37,86 @@ class MainPage(webapp2.RequestHandler):
 		
 class OauthHandler(webapp2.RequestHandler):
 	def get(self):
-		self.response.write('Oauth')
+		state = self.request.get('state')
+		logging.info(state)
+		code = self.request.get('code')
+		verification = 0;
+		
+		check_state = State.query()
+		results = qry.fetch()
+		for i in results:
+			if (i.state == state):
+				verification = 1
+				ndb.Key("State", long(i.key.id())).delete()
+				
+		if (verification == 1):
+			client_id = "931042662040-5cc54gub0j7ds4o7tp3ehdq8b30cqo9s.apps.googleusercontent.com"
+			clien_secret = "Ok5k-VTZW1CfBLCeon9-PfYK"
+			redirect_uri = "https://oauthdemoosu.appspot.com/oauth"
+			
+			payload = {
+			'code' : code,
+			'client_id' : client_id,
+			'clien_secret' : clien_secret,
+			'redirect_uri' : redirect_uri,
+			'grant_type' : 'authorization_code'
+			}
+			
+			payload = urllib.urlencode(payload)
+			results = urlfetch.fetch(url="https://www.googleapis.com/oauth2/v4/token", payload = payload, method=urlfetch.POST)
+			
+			time.sleep(0.5)
+			results = json.loads(result.content)
+			token = results['access_token']
+			
+			template_values = {
+				'state' : state,
+				'token' : token
+			}
+
+			template = JINJA_ENVIRONMENT.get_template('oauth.html')
+			self.response.write(template.render(template_values)))
+		
+		else:
+			self.response.write('400 Bad Request')
+			self.response.set_status(400)
 	
 class DisplayHandler(webapp2.RequestHandler):
 	def post(self):
-		self.response.write('DisplayHandler')
+		state = self.request.get('state')
+		token = self.request.get('token')
+		
+		auth_header = 'Bearer ' + token
+		
+		headers = [
+			'Authorization' : auth_header
+		]
+		
+		result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
+		time.sleep(0.5)
+		results = json.loads(result.content)
+		
+		isPlusUser = results['isPlusUser']
+		
+		if(isPlusUser):
+			givenName = results['name']['givenName']
+			familyName = results['name']['familyName']
+			emails = results['emails']['value']
+			
+			template_values = {
+				firstName = givenName,
+				lastName = familyName,
+				emailAddress = emails
+			}
+			
+			template = JINJA_ENVIRONMENT.get_template('display.html')
+			self.response.write(template.render(template_values)))
+		
+		else:
+			self.response.write('400 Bad Request')
+			self.response.set_status(400)
+			
+	
 
 
 # [START app]
