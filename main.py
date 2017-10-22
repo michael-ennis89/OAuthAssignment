@@ -102,7 +102,7 @@ class DisplayHandler(webapp2.RequestHandler):
 		if(isPlusUser):
 			givenName = results['name']['givenName']
 			familyName = results['name']['familyName']
-			emails = results['emails']['value']
+			emails = results['emails']['type']
 			
 			template_values = {
 				'firstName' : givenName,
