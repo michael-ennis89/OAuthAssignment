@@ -64,7 +64,7 @@ class OauthHandler(webapp2.RequestHandler):
 			}
 			
 			payload = urllib.urlencode(payload)
-			results = urlfetch.fetch(url="https://www.googleapis.com/oauth2/v4/token", payload = payload, method=urlfetch.POST)
+			result = urlfetch.fetch(url="https://www.googleapis.com/oauth2/v4/token", payload = payload, method=urlfetch.POST)
 			
 			time.sleep(0.5)
 			results = json.loads(result.content)
