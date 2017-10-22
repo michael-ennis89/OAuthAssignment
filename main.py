@@ -84,6 +84,8 @@ class OauthHandler(webapp2.RequestHandler):
 			# Request the token, store in JINJA2 template_values
 			payload = urllib.urlencode(payload)
 			tokenFetch = urlfetch.fetch(url="https://www.googleapis.com/oauth2/v4/token", payload = payload, method=urlfetch.POST)
+			# Pause or results are processed before they are received. 
+			time.sleep(0.5)
 			results = json.loads(tokenFetch.content)
 			token = results['access_token']
 			
@@ -117,6 +119,8 @@ class DisplayHandler(webapp2.RequestHandler):
 		
 		# Request the profile information, store in json. 
 		result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
+		# Pause or results are processed before they are received.
+		time.sleep(0.5)
 		results = json.loads(result.content)
 		
 		# Check if user is a Google Plus user
