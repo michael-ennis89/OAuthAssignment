@@ -102,12 +102,12 @@ class DisplayHandler(webapp2.RequestHandler):
 		if(isPlusUser):
 			givenName = results['name']['givenName']
 			familyName = results['name']['familyName']
-			emails = results['emails']['type']
+			urls = results['url']
 			
 			template_values = {
 				'firstName' : givenName,
 				'lastName' : familyName,
-				'emailAddress' : emails
+				'url' : urls
 			}
 			
 			template = JINJA_ENVIRONMENT.get_template('display.html')
